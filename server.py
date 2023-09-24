@@ -58,7 +58,7 @@ class ChatServer:
         if client in self.clients:
             nickname = self.nicknames.pop(client)
             self.clients.remove(client)
-            self.broadcast(f"{nickname} has left the chat".encode("utf-8"))
+            self.broadcast(f"{nickname} left the chat".encode("utf-8"))
             logging.info(f"{nickname} disconnected")
 
     def handle_command(self, client, command):
@@ -82,7 +82,7 @@ class ChatServer:
             else:
                 client.send("User not found.".encode("utf-8"))
         else:
-            client.send("invalid command. Type '/help' for a list of commands.".encode("utf-8"))
+            client.send("Invalid command. Type '/help' for a list of commands.".encode("utf-8"))
 
     def accept_clients(self):
         while True:
