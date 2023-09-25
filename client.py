@@ -24,7 +24,8 @@ class ChatClient:
             print(f"Error connecting to the server: {str(e)}")
             sys.exit(1)
 
-    def get_nickname(self):
+    @staticmethod
+    def get_nickname():
         while True:
             nickname = input("Choose a nickname: ")
             if nickname.strip():
@@ -40,8 +41,6 @@ class ChatClient:
                     print("Disconnected from the server.")
                     self.client.close()
                     sys.exit()
-                elif message.startswith('/'):
-                    self.handle_command(message)
                 else:
                     print(message)
             except Exception as e:
@@ -59,23 +58,6 @@ class ChatClient:
                     print(f"Error sending message to the server: {str(e)}")
                     self.client.close()
                     sys.exit()
-
-    def handle_command(self, command):
-        parts = command.split()
-        if parts[0] == '/help':
-            print("Available commands: /help, /quit, /list, /msg <user> <message>")
-        elif parts[0] == '/quit':
-            self.client.send("/quit".encode("utf-8"))
-            self.client.close()
-            sys.exit()
-        elif parts[0] == '/list':
-            self.client.send("/list".encode("utf-8"))
-        elif parts[0] == '/msg' and len(parts) >= 3:
-            recipient = parts[1]
-            message = ' '.join(parts[2:])
-            self.client.send(f"/msg {recipient} {message}".encode("utf-8"))
-        else:
-            print("Invalid command. Type '/help' for a list of commands.")
 
 
 if __name__ == "__main__":

@@ -58,7 +58,7 @@ class ChatServer:
         if client in self.clients:
             nickname = self.nicknames.pop(client)
             self.clients.remove(client)
-            self.broadcast(f"{nickname} left the chat".encode("utf-8"))
+            self.broadcast(f"{nickname} left the chat")
             logging.info(f"{nickname} disconnected")
 
     def handle_command(self, client, command):
@@ -77,7 +77,8 @@ class ChatServer:
             if recipient_name in self.nicknames.values():
                 recipient = [client for client, name in self.nicknames.items() if name == recipient_name][0]
                 message = ' '.join(parts[2:])
-                formatted_message = f'{datetime.datetime.now().strftime("%H:%M:%S")} - (Private) {self.nicknames[client]}: {message}'
+                formatted_message = (f'{datetime.datetime.now().strftime("%H:%M:%S")} - (Private) '
+                                     f'{self.nicknames[client]}: {message}')
                 recipient.send(formatted_message.encode("utf-8"))
             else:
                 client.send("User not found.".encode("utf-8"))
