@@ -2,6 +2,8 @@ import socket
 import threading
 import logging
 import datetime
+import sys
+import signal
 
 
 class ChatServer:
@@ -15,6 +17,7 @@ class ChatServer:
         self.server.bind((self.ip, self.port))
         self.server.listen()
 
+        signal.signal(signal.SIGINT, self.handle_shutdown)  # Register the signal handler for Ctrl + C
         logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s - %(levelname)s - %(message)s')  # some logging configurations
 
@@ -109,6 +112,16 @@ class ChatServer:
         logging.info("Server is up and running...")
         logging.info(f"Listening on {self.ip}:{self.port}")
         self.accept_clients()
+
+    def handle_shutdown(self, signum, frame):
+        logging.info("Shutting down the server...")
+        self.server.close()
+
+        # Close all client connections
+        for client in self.clients:
+            client.close()
+
+        sys.exit(0)  # Exit the program gracefully
 
 
 if __name__ == "__main__":
