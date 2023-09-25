@@ -16,7 +16,7 @@ class ChatServer:
         self.server.listen()
 
         logging.basicConfig(level=logging.INFO,
-                            format='%(asctime)s - %(levelname)s - %(message)s')  # some logging configuration
+                            format='%(asctime)s - %(levelname)s - %(message)s')  # some logging configurations
 
     def broadcast(self, message, sender=None):
         for client in self.clients:
