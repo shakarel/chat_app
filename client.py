@@ -1,7 +1,7 @@
 import socket
 import threading
 import sys
-import datetime
+
 
 class ChatClient:
     def __init__(self, server_ip, server_port):
@@ -63,7 +63,7 @@ class ChatClient:
     def handle_command(self, command):
         parts = command.split()
         if parts[0] == '/help':
-            print("Available commands: /help, /quit, /list, /msg <user> <message>, /nick <new_nickname>")
+            print("Available commands: /help, /quit, /list, /msg <user> <message>")
         elif parts[0] == '/quit':
             self.client.send("/quit".encode("utf-8"))
             self.client.close()
@@ -74,12 +74,9 @@ class ChatClient:
             recipient = parts[1]
             message = ' '.join(parts[2:])
             self.client.send(f"/msg {recipient} {message}".encode("utf-8"))
-        elif parts[0] == '/nick' and len(parts) == 2:
-            new_nickname = parts[1]
-            self.client.send(f"/nick {new_nickname}".encode("utf-8"))
-            self.nickname = new_nickname
         else:
             print("Invalid command. Type '/help' for a list of commands.")
+
 
 if __name__ == "__main__":
     SERVER_IP = "127.0.0.1"
